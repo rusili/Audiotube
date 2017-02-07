@@ -38,5 +38,4 @@ public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity
     }
 
     protected abstract YouTubePlayer.Provider getYouTubePlayerProvider ();
-
 }

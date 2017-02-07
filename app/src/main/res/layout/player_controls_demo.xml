@@ -46,39 +46,6 @@
         android:layout_weight="1"
         layout="@layout/player_controls_container" />
 
-    <RadioGroup
-        android:id="@+id/style_radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textAppearance="@android:style/TextAppearance.Medium"
-          android:text="@string/player_style"/>
-
-      <RadioButton
-          android:id="@+id/style_default"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:checked="true"
-          android:text="@string/def"/>
-
-      <RadioButton
-          android:id="@+id/style_minimal"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/minimal"/>
-
-      <RadioButton
-          android:id="@+id/style_chromeless"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/chromeless"/>
-
-    </RadioGroup>
-
   </LinearLayout>
 
   <ScrollView
