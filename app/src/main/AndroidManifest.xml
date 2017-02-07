@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Youtube.PlayerControlsDemoActivity"
+        <activity android:name=".Youtube.PlayerControlsDemoActivityStripped"
                   android:screenOrientation="nosensor"
                   android:configChanges="orientation|screenSize|keyboardHidden">/>
             <intent-filter>

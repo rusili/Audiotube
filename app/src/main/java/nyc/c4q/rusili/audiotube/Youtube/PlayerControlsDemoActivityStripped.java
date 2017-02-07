@@ -22,45 +22,34 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.ErrorReason;
 import com.google.android.youtube.player.YouTubePlayer.PlaybackEventListener;
 import com.google.android.youtube.player.YouTubePlayer.PlayerStateChangeListener;
-import com.google.android.youtube.player.YouTubePlayer.PlaylistEventListener;
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import nyc.c4q.rusili.audiotube.R;
 
-public class PlayerControlsDemoActivity extends YouTubeFailureRecoveryActivity implements
+public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryActivity implements
         View.OnClickListener,
         TextView.OnEditorActionListener,
         AdapterView.OnItemSelectedListener {
-
-    private static final ListEntry[] ENTRIES = {
-            new ListEntry("Playlist: Google I/O 2012", "PL56D792A831D0C362", true)};
 
     private static final String KEY_CURRENTLY_SELECTED_ID = "currentlySelectedId";
 
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer player;
     private TextView stateText;
-    private ArrayAdapter <ListEntry> videoAdapter;
-    private Spinner videoChooser;
     private Button playButton;
     private Button pauseButton;
     private EditText skipTo;
     private TextView eventLog;
     private StringBuilder logString;
-    private RadioGroup styleRadioGroup;
 
-    private MyPlaylistEventListener playlistEventListener;
     private MyPlayerStateChangeListener playerStateChangeListener;
     private MyPlaybackEventListener playbackEventListener;
 
@@ -74,7 +63,6 @@ public class PlayerControlsDemoActivity extends YouTubeFailureRecoveryActivity i
 
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         stateText = (TextView) findViewById(R.id.state_text);
-        videoChooser = (Spinner) findViewById(R.id.video_chooser);
         playButton = (Button) findViewById(R.id.play_button);
         pauseButton = (Button) findViewById(R.id.pause_button);
         skipTo = (EditText) findViewById(R.id.skip_to_text);
@@ -82,18 +70,12 @@ public class PlayerControlsDemoActivity extends YouTubeFailureRecoveryActivity i
 
         logString = new StringBuilder();
 
-        videoAdapter = new ArrayAdapter <ListEntry>(this, android.R.layout.simple_spinner_item, ENTRIES);
-        videoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        videoChooser.setOnItemSelectedListener(this);
-        videoChooser.setAdapter(videoAdapter);
-
         playButton.setOnClickListener(this);
         pauseButton.setOnClickListener(this);
         skipTo.setOnEditorActionListener(this);
 
         youTubePlayerView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
-        playlistEventListener = new MyPlaylistEventListener();
         playerStateChangeListener = new MyPlayerStateChangeListener();
         playbackEventListener = new MyPlaybackEventListener();
 
@@ -104,12 +86,11 @@ public class PlayerControlsDemoActivity extends YouTubeFailureRecoveryActivity i
     public void onInitializationSuccess (YouTubePlayer.Provider provider, YouTubePlayer player,
                                          boolean wasRestored) {
         this.player = player;
-        player.setPlaylistEventListener(playlistEventListener);
         player.setPlayerStateChangeListener(playerStateChangeListener);
         player.setPlaybackEventListener(playbackEventListener);
 
         if (!wasRestored) {
-            playVideoAtSelection();
+            playVideoOnLoad();
         }
         setControlsEnabled(true);
     }
@@ -119,28 +100,15 @@ public class PlayerControlsDemoActivity extends YouTubeFailureRecoveryActivity i
         return youTubePlayerView;
     }
 
-    private void playVideoAtSelection () {
-        ListEntry selectedEntry = videoAdapter.getItem(currentlySelectedPosition);
-        if (selectedEntry.id != currentlySelectedId && player != null) {
-            currentlySelectedId = selectedEntry.id;
-            if (selectedEntry.isPlaylist) {
-                player.cuePlaylist(selectedEntry.id);
-            } else {
-                player.cueVideo(selectedEntry.id);
-            }
-        }
+    private void playVideoOnLoad () {
+        player.loadVideo("ZCu2gwLj9ok");
     }
 
     @Override
-    public void onItemSelected (AdapterView <?> parent, View view, int pos, long id) {
-        currentlySelectedPosition = pos;
-        playVideoAtSelection();
-    }
+    public void onItemSelected (AdapterView <?> parent, View view, int pos, long id) {}
 
     @Override
-    public void onNothingSelected (AdapterView <?> parent) {
-        // Do nothing.
-    }
+    public void onNothingSelected (AdapterView <?> parent) {}
 
     @Override
     public void onClick (View v) {
@@ -191,7 +159,6 @@ public class PlayerControlsDemoActivity extends YouTubeFailureRecoveryActivity i
         playButton.setEnabled(enabled);
         pauseButton.setEnabled(enabled);
         skipTo.setEnabled(enabled);
-        videoChooser.setEnabled(enabled);
     }
 
     private static final int parseInt (String intString, int defaultValue) {
@@ -215,23 +182,6 @@ public class PlayerControlsDemoActivity extends YouTubeFailureRecoveryActivity i
         int currentTimeMillis = player.getCurrentTimeMillis();
         int durationMillis = player.getDurationMillis();
         return String.format("(%s/%s)", formatTime(currentTimeMillis), formatTime(durationMillis));
-    }
-
-    private final class MyPlaylistEventListener implements PlaylistEventListener {
-        @Override
-        public void onNext () {
-            log("NEXT VIDEO");
-        }
-
-        @Override
-        public void onPrevious () {
-            log("PREVIOUS VIDEO");
-        }
-
-        @Override
-        public void onPlaylistEnded () {
-            log("PLAYLIST ENDED");
-        }
     }
 
     private final class MyPlaybackEventListener implements PlaybackEventListener {
@@ -324,24 +274,4 @@ public class PlayerControlsDemoActivity extends YouTubeFailureRecoveryActivity i
             log(playerState);
         }
     }
-
-    private static final class ListEntry {
-
-        public final String title;
-        public final String id;
-        public final boolean isPlaylist;
-
-        public ListEntry (String title, String videoId, boolean isPlaylist) {
-            this.title = title;
-            this.id = videoId;
-            this.isPlaylist = isPlaylist;
-        }
-
-        @Override
-        public String toString () {
-            return title;
-        }
-
-    }
-
 }
