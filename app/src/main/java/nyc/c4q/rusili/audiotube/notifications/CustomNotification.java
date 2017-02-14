@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.RemoteViews;
 
 import nyc.c4q.rusili.audiotube.R;
-import nyc.c4q.rusili.audiotube.Youtube.PlayerControlsDemoActivityStripped;
+import nyc.c4q.rusili.audiotube.google.PlayerControlsDemoActivityStripped;
 
 public class CustomNotification {
     private Context mContext;

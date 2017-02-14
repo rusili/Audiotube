@@ -1,4 +1,4 @@
-package nyc.c4q.rusili.audiotube.owncreation;
+package nyc.c4q.rusili.audiotube.youtube;
 
 import android.util.Log;
 import android.view.View;
@@ -8,7 +8,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import nyc.c4q.rusili.audiotube.R;
-import nyc.c4q.rusili.audiotube.Youtube.YouTubeFailureRecoveryActivity;
+import nyc.c4q.rusili.audiotube.google.YouTubeFailureRecoveryActivity;
 
 public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements YouTubePlayer.OnInitializedListener {
     private YouTubePlayerView youTubePlayerView;
@@ -20,7 +20,7 @@ public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements Y
 
     private void initializeViews(View viewParam){
         youTubePlayerView = (YouTubePlayerView) viewParam.findViewById(R.id.youtube_view);
-        youTubePlayerView.initialize("AIzaSyC0XxmEUaHBgBz0jVEDilWMdsIgk1xTRxw", this);
+        youTubePlayerView.initialize(DeveloperKey.DEVELOPER_KEY, this);
     }
 
     @Override
@@ -29,13 +29,13 @@ public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements Y
         youTubePlayer.loadVideo("wKJ9KzGQq0w");
     }
 
-    public YouTubePlayer getYouTubePlayer(){
-        return youTubePlayer;
-    }
-
     @Override
     public void onInitializationFailure (YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
         Log.d("Initializationfailure:", youTubeInitializationResult.toString());
+    }
+
+    public YouTubePlayer getYouTubePlayer(){
+        return youTubePlayer;
     }
 
     @Override

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package nyc.c4q.rusili.audiotube.Youtube;
+package nyc.c4q.rusili.audiotube.google;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,18 +35,21 @@ import com.google.android.youtube.player.YouTubePlayer.PlayerStateChangeListener
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import nyc.c4q.rusili.audiotube.R;
-import nyc.c4q.rusili.audiotube.notifications.CustomNotification;
 
-public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryActivity implements
+public class PlayerControlsDemoActivityFull extends YouTubeFailureRecoveryActivity implements
         View.OnClickListener,
         TextView.OnEditorActionListener,
         AdapterView.OnItemSelectedListener {
 
+    private static final ListEntry[] ENTRIES = {
+            new ListEntry("Playlist: Google I/O 2012", "PL56D792A831D0C362", true)};
+
     private static final String KEY_CURRENTLY_SELECTED_ID = "currentlySelectedId";
 
     private YouTubePlayerView youTubePlayerView;
-    private static YouTubePlayer player;
+    private YouTubePlayer player;
     private TextView stateText;
+    private ArrayAdapter <ListEntry> videoAdapter;
     private Button playButton;
     private Button pauseButton;
     private EditText skipTo;
@@ -54,19 +57,31 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
     private MyPlayerStateChangeListener playerStateChangeListener;
     private MyPlaybackEventListener playbackEventListener;
 
+    private int currentlySelectedPosition;
     private String currentlySelectedId;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_controls_demo);
-        CustomNotification customNotification = new CustomNotification(getApplicationContext());
+        Intent getIntent = getIntent();
+        switch (getIntent.getAction()){
+            case "play":
+                player.play();
+                break;
+            case "pause":
+                player.pause();
+                break;
+        }
 
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         stateText = (TextView) findViewById(R.id.state_text);
         playButton = (Button) findViewById(R.id.play_button);
         pauseButton = (Button) findViewById(R.id.pause_button);
         skipTo = (EditText) findViewById(R.id.skip_to_text);
+
+        videoAdapter = new ArrayAdapter <ListEntry>(this, android.R.layout.simple_spinner_item, ENTRIES);
+        videoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         playButton.setOnClickListener(this);
         pauseButton.setOnClickListener(this);
@@ -88,7 +103,7 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
         player.setPlaybackEventListener(playbackEventListener);
 
         if (!wasRestored) {
-            playVideoOnLoad();
+            playVideoAtSelection();
         }
         setControlsEnabled(true);
     }
@@ -98,12 +113,23 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
         return youTubePlayerView;
     }
 
-    private void playVideoOnLoad () {
-        player.loadVideo("ZCu2gwLj9ok");
+    private void playVideoAtSelection () {
+        ListEntry selectedEntry = videoAdapter.getItem(currentlySelectedPosition);
+        if (selectedEntry.id != currentlySelectedId && player != null) {
+            currentlySelectedId = selectedEntry.id;
+            if (selectedEntry.isPlaylist) {
+                player.cuePlaylist(selectedEntry.id);
+            } else {
+                player.cueVideo(selectedEntry.id);
+            }
+        }
     }
 
     @Override
-    public void onItemSelected (AdapterView <?> parent, View view, int pos, long id) {}
+    public void onItemSelected (AdapterView <?> parent, View view, int pos, long id) {
+        currentlySelectedPosition = pos;
+        playVideoAtSelection();
+    }
 
     @Override
     public void onNothingSelected (AdapterView <?> parent) {}
@@ -255,20 +281,37 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
         }
     }
 
-    @Override
-    public void onBackPressed () {
-        new AlertDialog.Builder(this)
-                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick (DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
+    private static final class ListEntry {
+
+        public final String title;
+        public final String id;
+        public final boolean isPlaylist;
+
+        public ListEntry (String title, String videoId, boolean isPlaylist) {
+            this.title = title;
+            this.id = videoId;
+            this.isPlaylist = isPlaylist;
+        }
+
+        @Override
+        public String toString () {
+            return title;
+        }
     }
 
-    public static void play(){
-        player.play();
+    @Override
+    protected void onStart () {
+        super.onStart();
+        Intent intent = getIntent();
+        if (intent.getAction().equals("play")){
+            player.play();
+        } else if (intent.getAction().equals("pause")){
+            player.pause();
+        }
+    }
+
+    @Override
+    protected void onResume () {
+        super.onResume();
     }
 }

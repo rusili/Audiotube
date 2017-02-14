@@ -1,4 +1,4 @@
-package nyc.c4q.rusili.audiotube;
+package nyc.c4q.rusili.audiotube.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +7,11 @@ import android.widget.Button;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 
+import nyc.c4q.rusili.audiotube.other.Constants;
+import nyc.c4q.rusili.audiotube.R;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
 
-public class MainActivity extends YouTubeBaseActivity implements View.OnClickListener{
+public class ActivityMain extends YouTubeBaseActivity implements View.OnClickListener{
     public static View mView;
 
     @Override
@@ -18,8 +20,8 @@ public class MainActivity extends YouTubeBaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_main);
         mView = findViewById(android.R.id.content);
 
-        Button startButton = (Button) findViewById(R.id.button1);
-        Button stopButton = (Button) findViewById(R.id.button2);
+        Button startButton = (Button) findViewById(R.id.startService);
+        Button stopButton = (Button) findViewById(R.id.stopService);
 
         startButton.setOnClickListener(this);
         stopButton.setOnClickListener(this);
@@ -28,18 +30,15 @@ public class MainActivity extends YouTubeBaseActivity implements View.OnClickLis
     @Override
     public void onClick (View v) {
         switch (v.getId()) {
-            case R.id.button1:
-                Intent startIntent = new Intent(MainActivity.this, ForegroundService.class);
+            case R.id.startService:
+                Intent startIntent = new Intent(ActivityMain.this, ForegroundService.class);
                 startIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
                 startService(startIntent);
                 break;
-            case R.id.button2:
-                Intent stopIntent = new Intent(MainActivity.this, ForegroundService.class);
+            case R.id.stopService:
+                Intent stopIntent = new Intent(ActivityMain.this, ForegroundService.class);
                 stopIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
                 startService(stopIntent);
-                break;
-
-            default:
                 break;
         }
     }

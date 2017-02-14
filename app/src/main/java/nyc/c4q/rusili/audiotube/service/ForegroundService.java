@@ -11,9 +11,9 @@ import android.util.Log;
 
 import com.google.android.youtube.player.YouTubePlayer;
 
-import nyc.c4q.rusili.audiotube.Constants;
-import nyc.c4q.rusili.audiotube.MainActivity;
-import nyc.c4q.rusili.audiotube.owncreation.MyYoutubePlayer;
+import nyc.c4q.rusili.audiotube.other.Constants;
+import nyc.c4q.rusili.audiotube.activities.ActivityMain;
+import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 
 public class ForegroundService extends Service {
     private String LOG_TAG = "ForegroundService: ";
@@ -23,7 +23,7 @@ public class ForegroundService extends Service {
     @Override
     public void onCreate () {
         super.onCreate();
-        myYoutubePlayer = new MyYoutubePlayer(MainActivity.mView);
+        myYoutubePlayer = new MyYoutubePlayer(ActivityMain.mView);
     }
 
     @Override
@@ -32,32 +32,34 @@ public class ForegroundService extends Service {
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");
 
-            Intent notificationIntent = new Intent(this, MainActivity.class);
+            // Creates the notification
+            Intent notificationIntent = new Intent(this, ActivityMain.class);
             notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                     notificationIntent, 0);
 
+            // Pause
             Intent pauseIntent = new Intent(this, ForegroundService.class);
             pauseIntent.setAction(Constants.ACTION.PAUSE_ACTION);
             PendingIntent ppauseIntent = PendingIntent.getService(this, 0,
                     pauseIntent, 0);
 
+            // Play
             Intent playIntent = new Intent(this, ForegroundService.class);
             playIntent.setAction(Constants.ACTION.PLAY_ACTION);
             PendingIntent pplayIntent = PendingIntent.getService(this, 0,
                     playIntent, 0);
 
+            // Next
             Intent nextIntent = new Intent(this, ForegroundService.class);
             playIntent.setAction(Constants.ACTION.NEXT_ACTION);
             PendingIntent pnextIntent = PendingIntent.getService(this, 0,
                     nextIntent, 0);
 
             Notification notification = new NotificationCompat.Builder(this)
-                    .setContentTitle("Truiton Music Player")
-                    .setTicker("Truiton Music Player")
-                    .setContentText("My Music")
+                    .setContentTitle("Audiotube")
                     .setSmallIcon(android.R.drawable.btn_radio)
                     .setContentIntent(pendingIntent)
                     .setOngoing(true)

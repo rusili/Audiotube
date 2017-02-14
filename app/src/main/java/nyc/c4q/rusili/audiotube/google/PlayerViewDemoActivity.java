@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nyc.c4q.rusili.audiotube.Youtube;
+package nyc.c4q.rusili.audiotube.google;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubePlayer;
