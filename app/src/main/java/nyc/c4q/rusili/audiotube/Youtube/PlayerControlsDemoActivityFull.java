@@ -17,6 +17,7 @@
 package nyc.c4q.rusili.audiotube.Youtube;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -63,6 +64,15 @@ public class PlayerControlsDemoActivityFull extends YouTubeFailureRecoveryActivi
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_controls_demo);
+        Intent getIntent = getIntent();
+        switch (getIntent.getAction()){
+            case "play":
+                player.play();
+                break;
+            case "pause":
+                player.pause();
+                break;
+        }
 
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         stateText = (TextView) findViewById(R.id.state_text);
@@ -287,5 +297,21 @@ public class PlayerControlsDemoActivityFull extends YouTubeFailureRecoveryActivi
         public String toString () {
             return title;
         }
+    }
+
+    @Override
+    protected void onStart () {
+        super.onStart();
+        Intent intent = getIntent();
+        if (intent.getAction().equals("play")){
+            player.play();
+        } else if (intent.getAction().equals("pause")){
+            player.pause();
+        }
+    }
+
+    @Override
+    protected void onResume () {
+        super.onResume();
     }
 }

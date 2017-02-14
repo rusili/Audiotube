@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:padding="4dp"
+    >
+
+    <Button
+        android:id="@+id/notification_button_play"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:text="Play"
+        />
+    <Button
+        android:id="@+id/notification_button_pause"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:text="Pause"
+        />
+    <Button
+        android:id="@+id/notification_button_exit"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:text="Exit"
+        />
+
+</LinearLayout>

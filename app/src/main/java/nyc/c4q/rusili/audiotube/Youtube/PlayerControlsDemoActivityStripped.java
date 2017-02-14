@@ -16,7 +16,9 @@
 
 package nyc.c4q.rusili.audiotube.Youtube;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -33,6 +35,7 @@ import com.google.android.youtube.player.YouTubePlayer.PlayerStateChangeListener
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import nyc.c4q.rusili.audiotube.R;
+import nyc.c4q.rusili.audiotube.notifications.CustomNotification;
 
 public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryActivity implements
         View.OnClickListener,
@@ -42,33 +45,28 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
     private static final String KEY_CURRENTLY_SELECTED_ID = "currentlySelectedId";
 
     private YouTubePlayerView youTubePlayerView;
-    private YouTubePlayer player;
+    private static YouTubePlayer player;
     private TextView stateText;
     private Button playButton;
     private Button pauseButton;
     private EditText skipTo;
-    private TextView eventLog;
-    private StringBuilder logString;
 
     private MyPlayerStateChangeListener playerStateChangeListener;
     private MyPlaybackEventListener playbackEventListener;
 
-    private int currentlySelectedPosition;
     private String currentlySelectedId;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_controls_demo);
+        CustomNotification customNotification = new CustomNotification(getApplicationContext());
 
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         stateText = (TextView) findViewById(R.id.state_text);
         playButton = (Button) findViewById(R.id.play_button);
         pauseButton = (Button) findViewById(R.id.pause_button);
         skipTo = (EditText) findViewById(R.id.skip_to_text);
-        eventLog = (TextView) findViewById(R.id.event_log);
-
-        logString = new StringBuilder();
 
         playButton.setOnClickListener(this);
         pauseButton.setOnClickListener(this);
@@ -150,11 +148,6 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
                 playbackEventListener.bufferingState));
     }
 
-    private void log (String message) {
-        logString.append(message + "\n");
-        eventLog.setText(logString);
-    }
-
     private void setControlsEnabled (boolean enabled) {
         playButton.setEnabled(enabled);
         pauseButton.setEnabled(enabled);
@@ -192,35 +185,28 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
         public void onPlaying () {
             playbackState = "PLAYING";
             updateText();
-            log("\tPLAYING " + getTimesText());
         }
 
         @Override
         public void onBuffering (boolean isBuffering) {
             bufferingState = isBuffering ? "(BUFFERING)" : "";
             updateText();
-            log("\t\t" + (isBuffering ? "BUFFERING " : "NOT BUFFERING ") + getTimesText());
         }
 
         @Override
         public void onStopped () {
             playbackState = "STOPPED";
             updateText();
-            log("\tSTOPPED");
         }
 
         @Override
         public void onPaused () {
             playbackState = "PAUSED";
             updateText();
-            log("\tPAUSED " + getTimesText());
         }
 
         @Override
         public void onSeekTo (int endPositionMillis) {
-            log(String.format("\tSEEKTO: (%s/%s)",
-                    formatTime(endPositionMillis),
-                    formatTime(player.getDurationMillis())));
         }
     }
 
@@ -231,35 +217,30 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
         public void onLoading () {
             playerState = "LOADING";
             updateText();
-            log(playerState);
         }
 
         @Override
         public void onLoaded (String videoId) {
             playerState = String.format("LOADED %s", videoId);
             updateText();
-            log(playerState);
         }
 
         @Override
         public void onAdStarted () {
             playerState = "AD_STARTED";
             updateText();
-            log(playerState);
         }
 
         @Override
         public void onVideoStarted () {
             playerState = "VIDEO_STARTED";
             updateText();
-            log(playerState);
         }
 
         @Override
         public void onVideoEnded () {
             playerState = "VIDEO_ENDED";
             updateText();
-            log(playerState);
         }
 
         @Override
@@ -271,7 +252,23 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
                 setControlsEnabled(false);
             }
             updateText();
-            log(playerState);
         }
+    }
+
+    @Override
+    public void onBackPressed () {
+        new AlertDialog.Builder(this)
+                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick (DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    public static void play(){
+        player.play();
     }
 }
