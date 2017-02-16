@@ -4,21 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 
-import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.R;
+import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
 
 public class ActivityMain extends YouTubeBaseActivity implements View.OnClickListener{
     public static View mView;
+    private EditText editTextUrl;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mView = findViewById(android.R.id.content);
+        editTextUrl = (EditText) findViewById(R.id.edittest_url);
 
         Button startButton = (Button) findViewById(R.id.startService);
         Button stopButton = (Button) findViewById(R.id.stopService);
@@ -31,7 +34,9 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
     public void onClick (View v) {
         switch (v.getId()) {
             case R.id.startService:
+                String url = editTextUrl.getText().toString();
                 Intent startIntent = new Intent(ActivityMain.this, ForegroundService.class);
+                startIntent.putExtra("url", url);
                 startIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
                 startService(startIntent);
                 break;

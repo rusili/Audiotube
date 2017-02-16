@@ -28,6 +28,8 @@ public class ForegroundService extends Service {
 
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
+        String url = intent.getStringExtra("url");
+        Log.i("url: ", url);
         youTubePlayer = myYoutubePlayer.getYouTubePlayer();
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");

@@ -1,45 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+              android:orientation="vertical"
                 tools:context=".activities.ActivityMain">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:id="@+id/youtube_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="visible"
+        >
+    </com.google.android.youtube.player.YouTubePlayerView>
+
+    <EditText
+        android:id="@+id/edittest_url"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp"
-        android:text="Main Screen"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        />
 
     <Button
         android:id="@+id/startService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
         android:text="Start Foreground Service" />
 
     <Button
         android:id="@+id/stopService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/startService"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
         android:text="Stop Foreground Service" />
 
-    <com.google.android.youtube.player.YouTubePlayerView
-    android:id="@+id/youtube_view"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-    android:visibility="visible"
-    >
-    </com.google.android.youtube.player.YouTubePlayerView>
 
-</RelativeLayout>
+
+</LinearLayout>

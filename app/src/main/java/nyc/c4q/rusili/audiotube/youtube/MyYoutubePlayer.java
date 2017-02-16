@@ -26,7 +26,8 @@ public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements Y
     @Override
     public void onInitializationSuccess (YouTubePlayer.Provider provider, YouTubePlayer youTubePlayerParam, boolean b) {
         youTubePlayer = youTubePlayerParam;
-        youTubePlayer.loadVideo("wKJ9KzGQq0w");
+        youTubePlayer.loadVideo("BNjqTs3kV14");
+        youTubePlayer.setFullscreen(false);
     }
 
     @Override
