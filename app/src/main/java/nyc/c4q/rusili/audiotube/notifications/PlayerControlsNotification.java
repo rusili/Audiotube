@@ -2,16 +2,20 @@ package nyc.c4q.rusili.audiotube.notifications;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.widget.Button;
 import android.widget.RemoteViews;
 
 import nyc.c4q.rusili.audiotube.R;
 import nyc.c4q.rusili.audiotube.google.PlayerControlsDemoActivityStripped;
+import nyc.c4q.rusili.audiotube.service.KillService;
 
-public class CustomNotification {
+public class PlayerControlsNotification {
     private Context mContext;
     private NotificationManager notificationManager;
     private Button buttonPlay;
@@ -19,7 +23,7 @@ public class CustomNotification {
     private Button buttonExit;
     private RemoteViews smallView;
 
-    public CustomNotification(Context contextParam){
+    public PlayerControlsNotification (Context contextParam){
         this.mContext = contextParam;
         setUp();
         initializeViews();
@@ -38,6 +42,7 @@ public class CustomNotification {
     }
 
     private void setUp(){
+
         smallView = new RemoteViews(mContext.getPackageName(), R.layout.notification_bar);
         android.app.Notification mBuilder = new NotificationCompat.Builder(mContext)
                 .setSmallIcon(android.R.drawable.btn_radio)
@@ -49,4 +54,28 @@ public class CustomNotification {
         notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(555, mBuilder);
     }
+
+    private void killService(){
+        ServiceConnection mConnection = new ServiceConnection() {
+            public void onServiceConnected (ComponentName className, IBinder binder) {
+                ((KillService.KillBinder) binder).service.startService(new Intent(mContext, KillService.class));
+                smallView = new RemoteViews(mContext.getPackageName(), R.layout.notification_bar);
+                android.app.Notification mBuilder = new NotificationCompat.Builder(mContext)
+                        .setSmallIcon(android.R.drawable.btn_radio)
+                        .setContentTitle(String.valueOf(R.string.app_name))
+                        .setOngoing(true)
+                        .setContent(smallView)
+                        .build();
+
+                notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(555, mBuilder);
+            }
+
+            @Override
+            public void onServiceDisconnected (ComponentName name) {
+            }
+        };
+        mContext.bindService(new Intent(mContext, KillService.class), mConnection, Context.BIND_AUTO_CREATE);
+    }
+
 }

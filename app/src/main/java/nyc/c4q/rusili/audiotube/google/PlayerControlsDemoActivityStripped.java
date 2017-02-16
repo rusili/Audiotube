@@ -35,7 +35,7 @@ import com.google.android.youtube.player.YouTubePlayer.PlayerStateChangeListener
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import nyc.c4q.rusili.audiotube.R;
-import nyc.c4q.rusili.audiotube.notifications.CustomNotification;
+import nyc.c4q.rusili.audiotube.notifications.PlayerControlsNotification;
 
 public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryActivity implements
         View.OnClickListener,
@@ -60,7 +60,7 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_controls_demo);
-        CustomNotification customNotification = new CustomNotification(getApplicationContext());
+        PlayerControlsNotification customNotification = new PlayerControlsNotification(getApplicationContext());
 
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         stateText = (TextView) findViewById(R.id.state_text);

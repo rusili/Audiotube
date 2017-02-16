@@ -23,18 +23,20 @@ public class ForegroundService extends Service {
     @Override
     public void onCreate () {
         super.onCreate();
-        myYoutubePlayer = new MyYoutubePlayer(ActivityMain.mView);
+        myYoutubePlayer = ActivityMain.myYoutubePlayer;
     }
 
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
         String url = intent.getStringExtra("url");
-        Log.i("url: ", url);
+        Log.i("url: ", " " + url);
+        url = "BNjqTs3kV14";
         youTubePlayer = myYoutubePlayer.getYouTubePlayer();
+        youTubePlayer.loadVideo(url);
+
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");
 
-            // Creates the notification
             Intent notificationIntent = new Intent(this, ActivityMain.class);
             notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
