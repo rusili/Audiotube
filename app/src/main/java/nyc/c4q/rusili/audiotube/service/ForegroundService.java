@@ -24,14 +24,13 @@ public class ForegroundService extends Service {
     public void onCreate () {
         super.onCreate();
         myYoutubePlayer = ActivityMain.myYoutubePlayer;
+        youTubePlayer = myYoutubePlayer.getYouTubePlayer();
     }
 
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
         String url = intent.getStringExtra("url");
         Log.i("url: ", " " + url);
-        url = "BNjqTs3kV14";
-        youTubePlayer = myYoutubePlayer.getYouTubePlayer();
         youTubePlayer.loadVideo(url);
 
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
