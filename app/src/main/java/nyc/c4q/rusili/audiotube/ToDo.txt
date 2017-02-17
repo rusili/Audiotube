@@ -1,0 +1,5 @@
+Move notifications from ForegroundService OnStartCommand to separate class
+
+Sign In/Accounts:
+    Create firebase
+    Save stream history
