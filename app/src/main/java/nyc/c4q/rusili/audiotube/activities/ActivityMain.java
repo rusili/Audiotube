@@ -1,6 +1,9 @@
 package nyc.c4q.rusili.audiotube.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import nyc.c4q.rusili.audiotube.service.ForegroundService;
 import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 
 public class ActivityMain extends YouTubeBaseActivity implements View.OnClickListener{
+    private String TAG = "ActivityMain: ";
     private EditText editTextUrl;
     public static MyYoutubePlayer myYoutubePlayer;
 
@@ -24,6 +28,15 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         myYoutubePlayer = new MyYoutubePlayer(getWindow().getDecorView().getRootView());
 
         setViews();
+
+        IntentFilter filter = new IntentFilter("android.intent.CLOSE_ACTIVITY");
+        registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
     }
 
     private void setViews(){
@@ -53,4 +66,11 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
                 break;
         }
     }
+
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
 }

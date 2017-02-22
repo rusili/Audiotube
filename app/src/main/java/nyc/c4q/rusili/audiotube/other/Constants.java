@@ -6,6 +6,7 @@ public class Constants {
         public static String PREV_ACTION = "prev";
         public static String PLAY_ACTION = "play";
         public static String NEXT_ACTION = "next";
+        public static String EXIT_ACTION = "exit";
         public static String STARTFOREGROUND_ACTION = "startservice";
         public static String STOPFOREGROUND_ACTION = "stopservice";
         public static String PAUSE_ACTION = "pause";

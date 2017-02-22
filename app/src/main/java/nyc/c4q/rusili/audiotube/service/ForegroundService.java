@@ -51,8 +51,9 @@ public class ForegroundService extends Service {
         } else if (intent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
             Log.i(LOG_TAG, "Clicked Next");
         } else if (intent.getAction().equals(
-                Constants.ACTION.STOPFOREGROUND_ACTION)) {
+                Constants.ACTION.EXIT_ACTION)) {
             Log.i(LOG_TAG, "Received Stop Foreground Intent");
+            sendBroadcast(new Intent("android.intent.CLOSE_ACTIVITY"));
             stopForeground(true);
             stopSelf();
         }

@@ -1,4 +1,5 @@
-Move notifications from ForegroundService OnStartCommand to separate class
+Implement KillService
+Exit button in Notification
 
 Sign In/Accounts:
     Create firebase
