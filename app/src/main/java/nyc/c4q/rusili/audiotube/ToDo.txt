@@ -1,5 +1,5 @@
 Implement KillService
-Exit button in Notification
+Repeat on/off
 
 Sign In/Accounts:
     Create firebase

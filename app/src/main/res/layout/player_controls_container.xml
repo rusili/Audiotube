@@ -21,7 +21,6 @@
     android:gravity="center_horizontal">
 
   <Spinner
-      android:id="@+id/video_chooser"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="5dp"/>

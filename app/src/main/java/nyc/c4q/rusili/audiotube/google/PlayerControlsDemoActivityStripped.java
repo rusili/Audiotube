@@ -101,10 +101,12 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
     }
 
     @Override
-    public void onItemSelected (AdapterView <?> parent, View view, int pos, long id) {}
+    public void onItemSelected (AdapterView <?> parent, View view, int pos, long id) {
+    }
 
     @Override
-    public void onNothingSelected (AdapterView <?> parent) {}
+    public void onNothingSelected (AdapterView <?> parent) {
+    }
 
     @Override
     public void onClick (View v) {
@@ -266,7 +268,7 @@ public class PlayerControlsDemoActivityStripped extends YouTubeFailureRecoveryAc
                 .show();
     }
 
-    public static void play(){
+    public static void play () {
         player.play();
     }
 }

@@ -19,17 +19,32 @@ public class PlayerControlsNotification {
     private RemoteViews smallView;
     private Button buttonExit;
 
-    public PlayerControlsNotification (){}
+    public PlayerControlsNotification () {
+    }
 
-    public Notification setUp (String packageNameParam, Context contextParam){
+    public Notification setUp (String packageNameParam, Context contextParam) {
 
-        smallView = new RemoteViews(packageNameParam, R.layout.notification_bar);
+        smallView = new RemoteViews(packageNameParam, R.layout.notification_bar_material);
         Intent notificationIntent = new Intent(contextParam, ActivityMain.class);
         notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(contextParam, 0,
                 notificationIntent, 0);
+
+        // Repeat On/Off
+        Intent repeatIntent = new Intent(contextParam, ForegroundService.class);
+        repeatIntent.setAction(Constants.ACTION.REPEAT_ACTION);
+        PendingIntent pRepeatIntent = PendingIntent.getService(contextParam, 0,
+                repeatIntent, 0);
+        smallView.setOnClickPendingIntent(R.id.notification_button_repeat, pRepeatIntent);
+
+        // prev
+        Intent prevIntent = new Intent(contextParam, ForegroundService.class);
+        prevIntent.setAction(Constants.ACTION.PREV_ACTION);
+        PendingIntent pPrevIntent = PendingIntent.getService(contextParam, 0,
+                prevIntent, 0);
+        smallView.setOnClickPendingIntent(R.id.notification_button_prev, pPrevIntent);
 
         // Pause
         Intent pauseIntent = new Intent(contextParam, ForegroundService.class);
@@ -58,11 +73,14 @@ public class PlayerControlsNotification {
         PendingIntent pnextIntent = PendingIntent.getService(contextParam, 0,
                 nextIntent, 0);
 
-        android.app.Notification notification = new NotificationCompat.Builder(contextParam)
+        Notification notification = new NotificationCompat.Builder(contextParam)
                 .setContentTitle("Audiotube")
                 .setSmallIcon(android.R.drawable.btn_radio)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomBigContentView(smallView)
                 .setContent(smallView).build();
 
         return notification;

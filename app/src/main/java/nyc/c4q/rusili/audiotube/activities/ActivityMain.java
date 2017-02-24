@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +14,11 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 
 import nyc.c4q.rusili.audiotube.R;
 import nyc.c4q.rusili.audiotube.other.Constants;
+import nyc.c4q.rusili.audiotube.retrofit.RetrofitData;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
 import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 
-public class ActivityMain extends YouTubeBaseActivity implements View.OnClickListener{
+public class ActivityMain extends YouTubeBaseActivity implements View.OnClickListener {
     private String TAG = "ActivityMain: ";
     private EditText editTextUrl;
     public static MyYoutubePlayer myYoutubePlayer;
@@ -26,11 +28,35 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myYoutubePlayer = new MyYoutubePlayer(getWindow().getDecorView().getRootView());
-
         setViews();
+
+        getVideoInfo("9JJmHYZQci4");
 
         IntentFilter filter = new IntentFilter("android.intent.CLOSE_ACTIVITY");
         registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    protected void onResume () {
+        super.onResume();
+        handleShare();
+    }
+
+    private void handleShare () {
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                String sharedUrl = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (sharedUrl != null) {
+                    editTextUrl.setText(sharedUrl);
+                    getVideoInfo(sharedUrl);
+                }
+            }
+        }
     }
 
     @Override
@@ -39,7 +65,7 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         unregisterReceiver(mReceiver);
     }
 
-    private void setViews(){
+    private void setViews () {
         editTextUrl = (EditText) findViewById(R.id.edittest_url);
 
         Button startButton = (Button) findViewById(R.id.startService);
@@ -54,6 +80,8 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.startService:
                 String url = editTextUrl.getText().toString();
+                url = url.replace("https://youtu.be/", "");
+                Log.d(TAG, url);
                 Intent startIntent = new Intent(ActivityMain.this, ForegroundService.class);
                 startIntent.putExtra("url", url);
                 startIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
@@ -67,9 +95,14 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         }
     }
 
+    private void getVideoInfo (String sharedUrlParam){
+        RetrofitData retrofitData = new RetrofitData();
+        retrofitData.getInfo(sharedUrlParam);
+    }
+
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive (Context context, Intent intent) {
             finish();
         }
     };

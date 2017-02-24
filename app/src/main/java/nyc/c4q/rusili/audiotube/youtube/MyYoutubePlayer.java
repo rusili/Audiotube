@@ -14,11 +14,11 @@ public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements Y
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
 
-    public MyYoutubePlayer(View viewParam){
+    public MyYoutubePlayer (View viewParam) {
         initializeViews(viewParam);
     }
 
-    private void initializeViews(View viewParam){
+    private void initializeViews (View viewParam) {
         youTubePlayerView = (YouTubePlayerView) viewParam.findViewById(R.id.youtube_view);
         youTubePlayerView.initialize(DeveloperKey.DEVELOPER_KEY, this);
     }
@@ -27,6 +27,8 @@ public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements Y
     public void onInitializationSuccess (YouTubePlayer.Provider provider, YouTubePlayer youTubePlayerParam, boolean b) {
         youTubePlayer = youTubePlayerParam;
         youTubePlayer.setFullscreen(false);
+
+        getVideoInfo();
     }
 
     @Override
@@ -34,12 +36,16 @@ public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements Y
         Log.d("Initializationfailure:", youTubeInitializationResult.toString());
     }
 
-    public YouTubePlayer getYouTubePlayer(){
+    public YouTubePlayer getYouTubePlayer () {
         return youTubePlayer;
     }
 
     @Override
     protected YouTubePlayer.Provider getYouTubePlayerProvider () {
         return youTubePlayerView;
+    }
+
+
+    public void getVideoInfo () {
     }
 }

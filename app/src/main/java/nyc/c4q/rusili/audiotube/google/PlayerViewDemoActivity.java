@@ -30,22 +30,22 @@ import nyc.c4q.rusili.audiotube.R;
  */
 public class PlayerViewDemoActivity extends YouTubeFailureRecoveryActivity {
 
-  public PlayerViewDemoActivity(){
-    YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-    youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
-  }
-
-  @Override
-  public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
-                                      boolean wasRestored) {
-    if (!wasRestored) {
-      player.loadVideo("wKJ9KzGQq0w");
+    public PlayerViewDemoActivity () {
+        YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+        youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
     }
-  }
 
-  @Override
-  protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-    return (YouTubePlayerView) findViewById(R.id.youtube_view);
-  }
+    @Override
+    public void onInitializationSuccess (YouTubePlayer.Provider provider, YouTubePlayer player,
+                                         boolean wasRestored) {
+        if (!wasRestored) {
+            player.loadVideo("wKJ9KzGQq0w");
+        }
+    }
+
+    @Override
+    protected YouTubePlayer.Provider getYouTubePlayerProvider () {
+        return (YouTubePlayerView) findViewById(R.id.youtube_view);
+    }
 
 }

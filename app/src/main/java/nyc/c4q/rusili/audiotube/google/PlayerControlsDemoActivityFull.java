@@ -65,7 +65,7 @@ public class PlayerControlsDemoActivityFull extends YouTubeFailureRecoveryActivi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_controls_demo);
         Intent getIntent = getIntent();
-        switch (getIntent.getAction()){
+        switch (getIntent.getAction()) {
             case "play":
                 player.play();
                 break;
@@ -132,7 +132,8 @@ public class PlayerControlsDemoActivityFull extends YouTubeFailureRecoveryActivi
     }
 
     @Override
-    public void onNothingSelected (AdapterView <?> parent) {}
+    public void onNothingSelected (AdapterView <?> parent) {
+    }
 
     @Override
     public void onClick (View v) {
@@ -303,9 +304,9 @@ public class PlayerControlsDemoActivityFull extends YouTubeFailureRecoveryActivi
     protected void onStart () {
         super.onStart();
         Intent intent = getIntent();
-        if (intent.getAction().equals("play")){
+        if (intent.getAction().equals("play")) {
             player.play();
-        } else if (intent.getAction().equals("pause")){
+        } else if (intent.getAction().equals("pause")) {
             player.pause();
         }
     }

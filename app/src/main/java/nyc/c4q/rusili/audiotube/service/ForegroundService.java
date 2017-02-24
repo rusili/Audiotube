@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import com.google.android.youtube.player.YouTubePlayer;
 
@@ -18,7 +17,7 @@ import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 public class ForegroundService extends Service {
     private String LOG_TAG = "ForegroundService: ";
     private YouTubePlayer youTubePlayer;
-    private RemoteViews smallView;
+    private boolean isRepeat;
 
     @Override
     public void onCreate () {
@@ -33,29 +32,43 @@ public class ForegroundService extends Service {
         Log.i("url: ", " " + url);
         url = "9JJmHYZQci4";
 
+        //Start player
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");
             youTubePlayer.loadVideo(url);
+            isRepeat = false;
 
             PlayerControlsNotification playerControlsNotification = new PlayerControlsNotification();
             Notification notification = playerControlsNotification.setUp(getPackageName(), this);
 
             startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE,
                     notification);
+            //Repeat On/Off
+        } else if (intent.getAction().equals(Constants.ACTION.REPEAT_ACTION)) {
+            Log.i(LOG_TAG, "Clicked Repeat");
+            isRepeat = !isRepeat;
+            //Previous
+        } else if (intent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
+            Log.i(LOG_TAG, "Clicked Previous");
+            youTubePlayer.previous();
+            //Pause
         } else if (intent.getAction().equals(Constants.ACTION.PAUSE_ACTION)) {
             Log.i(LOG_TAG, "Clicked Pause");
             youTubePlayer.pause();
+            //Play
         } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
             Log.i(LOG_TAG, "Clicked Play");
             youTubePlayer.play();
+            //Next
         } else if (intent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
             Log.i(LOG_TAG, "Clicked Next");
+            //Exit
         } else if (intent.getAction().equals(
-                Constants.ACTION.EXIT_ACTION)) {
+                Constants.ACTION.STOPFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Stop Foreground Intent");
-            sendBroadcast(new Intent("android.intent.CLOSE_ACTIVITY"));
             stopForeground(true);
             stopSelf();
+            sendBroadcast(new Intent("android.intent.CLOSE_ACTIVITY"));
         }
         return START_STICKY;
     }

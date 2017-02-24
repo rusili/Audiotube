@@ -2,6 +2,7 @@ package nyc.c4q.rusili.audiotube.other;
 
 public class Constants {
     public interface ACTION {
+        public static String REPEAT_ACTION = "repeat";
         public static String MAIN_ACTION = "main";
         public static String PREV_ACTION = "prev";
         public static String PLAY_ACTION = "play";
