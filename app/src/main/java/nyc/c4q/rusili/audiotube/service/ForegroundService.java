@@ -44,10 +44,10 @@ public class ForegroundService extends Service {
             youTubePlayer.loadVideo(url);
             isRepeat = false;
 
-            PlayerControlsNotification playerControlsNotification = new PlayerControlsNotification();
-            playerControlsNotification.showNotification(getPackageName(), getApplicationContext());
+            PlayerControlsNotification playerControlsNotification = new PlayerControlsNotification(getPackageName(), getApplicationContext());
+            playerControlsNotification.getVideoInfo("Title", "Channel");
 
-            startForeground(101, playerControlsNotification.showNotification(getPackageName(), getApplicationContext()));
+            startForeground(101, playerControlsNotification.showNotification());
 
             //Repeat On/Off
         } else if (intent.getAction().equals(Constants.ACTION.REPEAT_ACTION)) {
@@ -75,6 +75,8 @@ public class ForegroundService extends Service {
             stopForeground(true);
             stopSelf();
             sendBroadcast(new Intent("android.intent.CLOSE_ACTIVITY"));
+            Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            sendBroadcast(closeDialog);
         }
         return START_STICKY;
     }

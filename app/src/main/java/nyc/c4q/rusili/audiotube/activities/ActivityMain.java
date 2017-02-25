@@ -30,8 +30,6 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         myYoutubePlayer = new MyYoutubePlayer(getWindow().getDecorView().getRootView());
         setViews();
 
-        getVideoInfo("9JJmHYZQci4");
-
         IntentFilter filter = new IntentFilter("android.intent.CLOSE_ACTIVITY");
         registerReceiver(mReceiver, filter);
     }

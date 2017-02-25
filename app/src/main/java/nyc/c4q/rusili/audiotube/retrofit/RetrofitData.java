@@ -2,6 +2,7 @@ package nyc.c4q.rusili.audiotube.retrofit;
 
 import android.util.Log;
 
+import nyc.c4q.rusili.audiotube.notifications.PlayerControlsNotification;
 import nyc.c4q.rusili.audiotube.retrofit.JSON.JSONResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,8 +16,10 @@ public class RetrofitData {
     private String TAG = "RetrofitData: ";
     private final String key = "AIzaSyDckagymH1dcK_WWeCyD908ix1OHPZbDpY";
     private String part = "snippet,contentDetails";
+    private PlayerControlsNotification playerControlsNotification;
 
-    public RetrofitData(){}
+    public RetrofitData(){
+    }
 
     public void getInfo(String videoIDParam){
         Retrofit retrofit = new Retrofit.Builder()
