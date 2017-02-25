@@ -1,6 +1,6 @@
 package nyc.c4q.rusili.audiotube.service;
 
-import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -12,12 +12,14 @@ import com.google.android.youtube.player.YouTubePlayer;
 import nyc.c4q.rusili.audiotube.activities.ActivityMain;
 import nyc.c4q.rusili.audiotube.notifications.PlayerControlsNotification;
 import nyc.c4q.rusili.audiotube.other.Constants;
+import nyc.c4q.rusili.audiotube.retrofit.RetrofitData;
 import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 
 public class ForegroundService extends Service {
     private String LOG_TAG = "ForegroundService: ";
     private YouTubePlayer youTubePlayer;
     private boolean isRepeat;
+    private NotificationManager notificationManager;
 
     @Override
     public void onCreate () {
@@ -28,9 +30,13 @@ public class ForegroundService extends Service {
 
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
+
         String url = intent.getStringExtra("url");
         Log.i("url: ", " " + url);
         url = "9JJmHYZQci4";
+
+        RetrofitData retrofitData = new RetrofitData();
+        retrofitData.getInfo(url);
 
         //Start player
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
@@ -39,10 +45,10 @@ public class ForegroundService extends Service {
             isRepeat = false;
 
             PlayerControlsNotification playerControlsNotification = new PlayerControlsNotification();
-            Notification notification = playerControlsNotification.setUp(getPackageName(), this);
+            playerControlsNotification.showNotification(getPackageName(), getApplicationContext());
 
-            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE,
-                    notification);
+            startForeground(101, playerControlsNotification.showNotification(getPackageName(), getApplicationContext()));
+
             //Repeat On/Off
         } else if (intent.getAction().equals(Constants.ACTION.REPEAT_ACTION)) {
             Log.i(LOG_TAG, "Clicked Repeat");
