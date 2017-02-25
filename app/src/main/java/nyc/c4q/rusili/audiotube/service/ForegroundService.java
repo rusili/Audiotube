@@ -21,6 +21,7 @@ public class ForegroundService extends Service {
     private boolean isRepeat;
     private NotificationManager notificationManager = null;
     private PlayerControlsNotification playerControlsNotification = null;
+    private Intent mIntent;
 
     @Override
     public void onCreate () {
@@ -31,48 +32,52 @@ public class ForegroundService extends Service {
 
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
+        this.mIntent = intent;
         String url = intent.getStringExtra("url");
         Log.i("url: ", " " + url);
         url = "9JJmHYZQci4";
 
         RetrofitData retrofitData = new RetrofitData();
-        retrofitData.getInfo(url);
+        retrofitData.getInfo(url, this);
+
+        return START_STICKY;
+    }
+
+    public void onNetworkResponse(String url) {
+        if (notificationManager == null) {
+            playerControlsNotification = new PlayerControlsNotification();
+            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.showNotification(getPackageName(), getApplicationContext()));
+            notificationManager = playerControlsNotification.getManager();
+        } else {
+            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.updateNotification(getPackageName(), getApplicationContext()));
+        }
 
         //Start player
-        if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
+        if (mIntent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");
             youTubePlayer.loadVideo(url);
             isRepeat = false;
-
-            if (notificationManager == null) {
-                playerControlsNotification = new PlayerControlsNotification();
-                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.showNotification(getPackageName(), getApplicationContext()));
-                notificationManager = playerControlsNotification.getManager();
-            } else {
-                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.updateNotification(getPackageName(), getApplicationContext()));
-            }
-
             //Repeat On/Off
-        } else if (intent.getAction().equals(Constants.ACTION.REPEAT_ACTION)) {
+        } else if (mIntent.getAction().equals(Constants.ACTION.REPEAT_ACTION)) {
             Log.i(LOG_TAG, "Clicked Repeat");
             isRepeat = !isRepeat;
             //Previous
-        } else if (intent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
+        } else if (mIntent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
             Log.i(LOG_TAG, "Clicked Previous");
             youTubePlayer.previous();
             //Pause
-        } else if (intent.getAction().equals(Constants.ACTION.PAUSE_ACTION)) {
+        } else if (mIntent.getAction().equals(Constants.ACTION.PAUSE_ACTION)) {
             Log.i(LOG_TAG, "Clicked Pause");
             youTubePlayer.pause();
             //Play
-        } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
+        } else if (mIntent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
             Log.i(LOG_TAG, "Clicked Play");
             youTubePlayer.play();
             //Next
-        } else if (intent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
+        } else if (mIntent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
             Log.i(LOG_TAG, "Clicked Next");
             //Exit
-        } else if (intent.getAction().equals(
+        } else if (mIntent.getAction().equals(
                 Constants.ACTION.STOPFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Stop Foreground Intent");
             stopForeground(true);
@@ -81,7 +86,6 @@ public class ForegroundService extends Service {
             Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
             sendBroadcast(closeDialog);
         }
-        return START_STICKY;
     }
 
     @Nullable

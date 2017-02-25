@@ -92,7 +92,6 @@ public class PlayerControlsNotification {
     }
 
     public Notification updateNotification (String packageName, Context mContext) {
-        setIntents(mContext);
 
         notificationView = new RemoteViews(packageName, R.layout.view_notification);
         notificationView.setTextViewText(R.id.notification_title, "V");
@@ -101,6 +100,7 @@ public class PlayerControlsNotification {
         notificationManager.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notificationBuilder.build());
         notification.bigContentView = notificationView;
 
+        setIntents(mContext);
         return notification;
     }
 
