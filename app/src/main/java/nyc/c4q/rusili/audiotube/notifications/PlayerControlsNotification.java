@@ -14,12 +14,12 @@ import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
 
 public class PlayerControlsNotification {
-    private RemoteViews customView;
+    private RemoteViews notificationView;
     private NotificationManager notificationManager;
     private NotificationCompat.Builder notificationBuilder;
-    private int notifyID = 101;
     private String mPackageName;
     private Context mContext;
+    private Notification notification;
 
     public PlayerControlsNotification (String packageNameParam, Context contextParam) {
         this.mPackageName = packageNameParam;
@@ -27,9 +27,9 @@ public class PlayerControlsNotification {
     }
 
     public Notification showNotification() {
-        customView = new RemoteViews( mPackageName, R.layout.view_notification);
-        customView.setTextViewText(R.id.notification_title, "A");
-        customView.setTextViewText(R.id.notification_channel, "B");
+        notificationView = new RemoteViews( mPackageName, R.layout.view_notification);
+        notificationView.setTextViewText(R.id.notification_title, "A");
+        notificationView.setTextViewText(R.id.notification_channel, "B");
 
         Intent notificationIntent = new Intent(mContext, ActivityMain.class);
         notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
@@ -43,35 +43,35 @@ public class PlayerControlsNotification {
         repeatIntent.setAction(Constants.ACTION.REPEAT_ACTION);
         PendingIntent pRepeatIntent = PendingIntent.getService(mContext, 0,
                 repeatIntent, 0);
-        customView.setOnClickPendingIntent(R.id.notification_button_repeat, pRepeatIntent);
+        notificationView.setOnClickPendingIntent(R.id.notification_button_repeat, pRepeatIntent);
 
         // prev
         Intent prevIntent = new Intent(mContext, ForegroundService.class);
         prevIntent.setAction(Constants.ACTION.PREV_ACTION);
         PendingIntent pPrevIntent = PendingIntent.getService(mContext, 0,
                 prevIntent, 0);
-        customView.setOnClickPendingIntent(R.id.notification_button_prev, pPrevIntent);
+        notificationView.setOnClickPendingIntent(R.id.notification_button_prev, pPrevIntent);
 
         // Pause
         Intent pauseIntent = new Intent(mContext, ForegroundService.class);
         pauseIntent.setAction(Constants.ACTION.PAUSE_ACTION);
         PendingIntent ppauseIntent = PendingIntent.getService(mContext, 0,
                 pauseIntent, 0);
-        customView.setOnClickPendingIntent(R.id.notification_button_pause, ppauseIntent);
+        notificationView.setOnClickPendingIntent(R.id.notification_button_pause, ppauseIntent);
 
         // Play
         Intent playIntent = new Intent(mContext, ForegroundService.class);
         playIntent.setAction(Constants.ACTION.PLAY_ACTION);
         PendingIntent pplayIntent = PendingIntent.getService(mContext, 0,
                 playIntent, 0);
-        customView.setOnClickPendingIntent(R.id.notification_button_play, pplayIntent);
+        notificationView.setOnClickPendingIntent(R.id.notification_button_play, pplayIntent);
 
         // Exit
         Intent exitIntent = new Intent(mContext, ForegroundService.class);
         exitIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
         PendingIntent pExitIntent = PendingIntent.getService(mContext, 0,
                 exitIntent, 0);
-        customView.setOnClickPendingIntent(R.id.notification_button_exit, pExitIntent);
+        notificationView.setOnClickPendingIntent(R.id.notification_button_exit, pExitIntent);
 
         // Next
         Intent nextIntent = new Intent(mContext, ForegroundService.class);
@@ -79,22 +79,30 @@ public class PlayerControlsNotification {
         PendingIntent pnextIntent = PendingIntent.getService(mContext, 0,
                 nextIntent, 0);
 
-        Notification notification = new Notification();
+        notification = new Notification();
         notificationBuilder = new NotificationCompat.Builder( mContext )
                 .setAutoCancel( true )
                 .setSmallIcon(android.R.drawable.sym_def_app_icon)
                 .setContentTitle("Audiotube");
         notification = notificationBuilder.build();
-        notification.bigContentView = customView;
+        notification.bigContentView = notificationView;
 
-        notificationManager =
-                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         return notification;
     }
 
-    public void getVideoInfo (String titleParam, String channelTitleParam) {
-        // set views
+    public Notification updateNotification(){
+        notificationView = new RemoteViews( mPackageName, R.layout.view_notification);
+        notificationView.setTextViewText(R.id.notification_title, "Z");
+        notificationView.setTextViewText(R.id.notification_channel, "Q");
+
+        notificationManager.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notificationBuilder.build());
+        notification.bigContentView = notificationView;
+        return notification;
     }
 
+    public NotificationManager getManager () {
+        return notificationManager;
+    }
 }

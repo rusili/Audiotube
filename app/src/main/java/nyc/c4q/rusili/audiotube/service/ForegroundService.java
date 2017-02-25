@@ -20,6 +20,7 @@ public class ForegroundService extends Service {
     private YouTubePlayer youTubePlayer;
     private boolean isRepeat;
     private NotificationManager notificationManager;
+    private PlayerControlsNotification playerControlsNotification = null;
 
     @Override
     public void onCreate () {
@@ -30,7 +31,6 @@ public class ForegroundService extends Service {
 
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
-
         String url = intent.getStringExtra("url");
         Log.i("url: ", " " + url);
         url = "9JJmHYZQci4";
@@ -44,10 +44,13 @@ public class ForegroundService extends Service {
             youTubePlayer.loadVideo(url);
             isRepeat = false;
 
-            PlayerControlsNotification playerControlsNotification = new PlayerControlsNotification(getPackageName(), getApplicationContext());
-            playerControlsNotification.getVideoInfo("Title", "Channel");
-
-            startForeground(101, playerControlsNotification.showNotification());
+            if (notificationManager == null) {
+                playerControlsNotification = new PlayerControlsNotification(getPackageName(), getApplicationContext());
+                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.showNotification());
+                notificationManager = playerControlsNotification.getManager();
+            } else {
+                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.updateNotification());
+            }
 
             //Repeat On/Off
         } else if (intent.getAction().equals(Constants.ACTION.REPEAT_ACTION)) {
