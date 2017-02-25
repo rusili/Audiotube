@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JSONResponse {
-    private List<items> items = new ArrayList<>();
+    private List <items> items = new ArrayList <>();
 
     public List <JSONResponse.items> getItems () {
         return items;
     }
 
-    public class items{
+    public class items {
         String kind;
         String id;
         snippet snippet;
@@ -32,7 +32,7 @@ public class JSONResponse {
             return contentDetails;
         }
 
-        public class snippet{
+        public class snippet {
             String channelId;
             String title;
             String description;
@@ -55,7 +55,7 @@ public class JSONResponse {
             }
         }
 
-        public class contentDetails{
+        public class contentDetails {
             public String getDuration () {
                 return duration;
             }

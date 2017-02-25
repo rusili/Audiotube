@@ -2,7 +2,6 @@ package nyc.c4q.rusili.audiotube.retrofit;
 
 import android.util.Log;
 
-import nyc.c4q.rusili.audiotube.notifications.PlayerControlsNotification;
 import nyc.c4q.rusili.audiotube.retrofit.JSON.JSONResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,22 +15,21 @@ public class RetrofitData {
     private String TAG = "RetrofitData: ";
     private final String key = "AIzaSyDckagymH1dcK_WWeCyD908ix1OHPZbDpY";
     private String part = "snippet,contentDetails";
-    private PlayerControlsNotification playerControlsNotification;
 
-    public RetrofitData(){
+    public RetrofitData () {
     }
 
-    public void getInfo(String videoIDParam){
+    public void getInfo (String videoIDParam) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.googleapis.com/youtube/v3/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         ServiceData serviceData = retrofit.create(ServiceData.class);
-        Call<JSONResponse> getVideoData = serviceData.getVideoData(videoIDParam, key, part);
+        Call <JSONResponse> getVideoData = serviceData.getVideoData(videoIDParam, key, part);
         getVideoData.enqueue(new Callback <JSONResponse>() {
             @Override
-            public void onResponse (Call <JSONResponse> call, Response<JSONResponse> response) {
+            public void onResponse (Call <JSONResponse> call, Response <JSONResponse> response) {
                 Log.d(TAG + "Url", call.request().url().toString());
                 JSONResponse jsonResponse = response.body();
                 Log.d(TAG + "Response", jsonResponse.toString());

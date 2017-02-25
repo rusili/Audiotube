@@ -17,17 +17,12 @@ public class PlayerControlsNotification {
     private RemoteViews notificationView;
     private NotificationManager notificationManager;
     private NotificationCompat.Builder notificationBuilder;
-    private String mPackageName;
-    private Context mContext;
     private Notification notification;
 
-    public PlayerControlsNotification (String packageNameParam, Context contextParam) {
-        this.mPackageName = packageNameParam;
-        this.mContext = contextParam;
-    }
+    public PlayerControlsNotification () {}
 
-    public Notification showNotification() {
-        notificationView = new RemoteViews( mPackageName, R.layout.view_notification);
+    public Notification showNotification (String packageName, Context mContext) {
+        notificationView = new RemoteViews(packageName, R.layout.view_notification);
         notificationView.setTextViewText(R.id.notification_title, "A");
         notificationView.setTextViewText(R.id.notification_channel, "B");
 
@@ -38,6 +33,22 @@ public class PlayerControlsNotification {
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0,
                 notificationIntent, 0);
 
+        setIntents(mContext);
+
+        notification = new Notification();
+        notificationBuilder = new NotificationCompat.Builder(mContext)
+                .setAutoCancel(true)
+                .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                .setContentTitle("Audiotube");
+        notification = notificationBuilder.build();
+        notification.bigContentView = notificationView;
+
+        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        return notification;
+    }
+
+    private void setIntents (Context mContext) {
         // Repeat On/Off
         Intent repeatIntent = new Intent(mContext, ForegroundService.class);
         repeatIntent.setAction(Constants.ACTION.REPEAT_ACTION);
@@ -78,31 +89,23 @@ public class PlayerControlsNotification {
         playIntent.setAction(Constants.ACTION.NEXT_ACTION);
         PendingIntent pnextIntent = PendingIntent.getService(mContext, 0,
                 nextIntent, 0);
-
-        notification = new Notification();
-        notificationBuilder = new NotificationCompat.Builder( mContext )
-                .setAutoCancel( true )
-                .setSmallIcon(android.R.drawable.sym_def_app_icon)
-                .setContentTitle("Audiotube");
-        notification = notificationBuilder.build();
-        notification.bigContentView = notificationView;
-
-        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        return notification;
     }
 
-    public Notification updateNotification(){
-        notificationView = new RemoteViews( mPackageName, R.layout.view_notification);
-        notificationView.setTextViewText(R.id.notification_title, "Z");
-        notificationView.setTextViewText(R.id.notification_channel, "Q");
+    public Notification updateNotification (String packageName, Context mContext) {
+        setIntents(mContext);
+
+        notificationView = new RemoteViews(packageName, R.layout.view_notification);
+        notificationView.setTextViewText(R.id.notification_title, "V");
+        notificationView.setTextViewText(R.id.notification_channel, "X");
 
         notificationManager.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notificationBuilder.build());
         notification.bigContentView = notificationView;
+
         return notification;
     }
 
     public NotificationManager getManager () {
         return notificationManager;
     }
+
 }

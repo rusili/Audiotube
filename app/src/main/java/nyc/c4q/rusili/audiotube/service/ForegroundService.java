@@ -19,7 +19,7 @@ public class ForegroundService extends Service {
     private String LOG_TAG = "ForegroundService: ";
     private YouTubePlayer youTubePlayer;
     private boolean isRepeat;
-    private NotificationManager notificationManager;
+    private NotificationManager notificationManager = null;
     private PlayerControlsNotification playerControlsNotification = null;
 
     @Override
@@ -45,11 +45,11 @@ public class ForegroundService extends Service {
             isRepeat = false;
 
             if (notificationManager == null) {
-                playerControlsNotification = new PlayerControlsNotification(getPackageName(), getApplicationContext());
-                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.showNotification());
+                playerControlsNotification = new PlayerControlsNotification();
+                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.showNotification(getPackageName(), getApplicationContext()));
                 notificationManager = playerControlsNotification.getManager();
             } else {
-                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.updateNotification());
+                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.updateNotification(getPackageName(), getApplicationContext()));
             }
 
             //Repeat On/Off

@@ -37,11 +37,10 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
     @Override
     protected void onResume () {
         super.onResume();
-        handleShare();
+        getShareIntent();
     }
 
-    private void handleShare () {
-        // Get intent, action and MIME type
+    private void getShareIntent () {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
@@ -93,7 +92,7 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         }
     }
 
-    private void getVideoInfo (String sharedUrlParam){
+    private void getVideoInfo (String sharedUrlParam) {
         RetrofitData retrofitData = new RetrofitData();
         retrofitData.getInfo(sharedUrlParam);
     }
