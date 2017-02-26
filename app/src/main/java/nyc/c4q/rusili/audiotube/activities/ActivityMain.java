@@ -14,7 +14,6 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 
 import nyc.c4q.rusili.audiotube.R;
 import nyc.c4q.rusili.audiotube.other.Constants;
-import nyc.c4q.rusili.audiotube.retrofit.RetrofitData;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
 import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 
@@ -50,7 +49,7 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
                 String sharedUrl = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (sharedUrl != null) {
                     editTextUrl.setText(sharedUrl);
-                    getVideoInfo(sharedUrl);
+                    //getVideoInfo(sharedUrl);
                 }
             }
         }
@@ -92,10 +91,10 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         }
     }
 
-    private void getVideoInfo (String sharedUrlParam) {
-        RetrofitData retrofitData = new RetrofitData();
-        retrofitData.getInfo(sharedUrlParam);
-    }
+//    private void getVideoInfo (String sharedUrlParam) {
+//        RetrofitData retrofitData = new RetrofitData();
+//        retrofitData.getInfo(sharedUrlParam);
+//    }
 
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override

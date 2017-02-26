@@ -3,6 +3,7 @@ package nyc.c4q.rusili.audiotube.retrofit;
 import android.util.Log;
 
 import nyc.c4q.rusili.audiotube.retrofit.JSON.JSONResponse;
+import nyc.c4q.rusili.audiotube.service.ForegroundService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,7 +20,7 @@ public class RetrofitData {
     public RetrofitData () {
     }
 
-    public void getInfo (String videoIDParam) {
+    public void getInfo (final String videoIDParam, final ForegroundService foregroundService) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.googleapis.com/youtube/v3/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -32,6 +33,7 @@ public class RetrofitData {
             public void onResponse (Call <JSONResponse> call, Response <JSONResponse> response) {
                 Log.d(TAG + "Url", call.request().url().toString());
                 JSONResponse jsonResponse = response.body();
+                foregroundService.onNetworkResponse(videoIDParam, jsonResponse);
                 Log.d(TAG + "Response", jsonResponse.toString());
             }
 

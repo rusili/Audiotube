@@ -12,6 +12,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import nyc.c4q.rusili.audiotube.activities.ActivityMain;
 import nyc.c4q.rusili.audiotube.notifications.PlayerControlsNotification;
 import nyc.c4q.rusili.audiotube.other.Constants;
+import nyc.c4q.rusili.audiotube.retrofit.JSON.JSONResponse;
 import nyc.c4q.rusili.audiotube.retrofit.RetrofitData;
 import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 
@@ -43,16 +44,18 @@ public class ForegroundService extends Service {
         return START_STICKY;
     }
 
-    public void onNetworkResponse(String url) {
+    public void onNetworkResponse(String url, JSONResponse jsonResponse) {
+        String title = jsonResponse.getItems().get(0).getSnippet().getTitle();
+        String channel = jsonResponse.getItems().get(0).getSnippet().getChannelTitle();
+
         if (notificationManager == null) {
             playerControlsNotification = new PlayerControlsNotification();
-            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.showNotification(getPackageName(), getApplicationContext()));
+            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.showNotification(getPackageName(), getApplicationContext(), title, channel));
             notificationManager = playerControlsNotification.getManager();
         } else {
-            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.updateNotification(getPackageName(), getApplicationContext()));
+            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, playerControlsNotification.updateNotification(getPackageName(), getApplicationContext(), title, channel));
         }
 
-        //Start player
         if (mIntent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");
             youTubePlayer.loadVideo(url);

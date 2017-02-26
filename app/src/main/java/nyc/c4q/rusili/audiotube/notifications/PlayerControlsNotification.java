@@ -21,10 +21,10 @@ public class PlayerControlsNotification {
 
     public PlayerControlsNotification () {}
 
-    public Notification showNotification (String packageName, Context mContext) {
+    public Notification showNotification (String packageName, Context mContext, String title, String channel) {
         notificationView = new RemoteViews(packageName, R.layout.view_notification);
-        notificationView.setTextViewText(R.id.notification_title, "A");
-        notificationView.setTextViewText(R.id.notification_channel, "B");
+        notificationView.setTextViewText(R.id.notification_title, title);
+        notificationView.setTextViewText(R.id.notification_channel, channel);
 
         Intent notificationIntent = new Intent(mContext, ActivityMain.class);
         notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
@@ -91,11 +91,11 @@ public class PlayerControlsNotification {
                 nextIntent, 0);
     }
 
-    public Notification updateNotification (String packageName, Context mContext) {
+    public Notification updateNotification (String packageName, Context mContext, String title, String channel) {
 
         notificationView = new RemoteViews(packageName, R.layout.view_notification);
-        notificationView.setTextViewText(R.id.notification_title, "V");
-        notificationView.setTextViewText(R.id.notification_channel, "X");
+        notificationView.setTextViewText(R.id.notification_title, title);
+        notificationView.setTextViewText(R.id.notification_channel, channel);
 
         notificationManager.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notificationBuilder.build());
         notification.bigContentView = notificationView;
