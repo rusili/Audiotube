@@ -11,10 +11,10 @@ import com.google.android.youtube.player.YouTubePlayer;
 
 import nyc.c4q.rusili.audiotube.activities.ActivityMain;
 import nyc.c4q.rusili.audiotube.notifications.PlayerControlsNotification;
-import nyc.c4q.rusili.audiotube.utility.Constants;
+import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.retrofit.JSON.JSONResponse;
 import nyc.c4q.rusili.audiotube.retrofit.RetrofitData;
-import nyc.c4q.rusili.audiotube.utility.MyYoutubePlayer;
+import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 
 public class ForegroundService extends Service {
     private String LOG_TAG = "ForegroundService: ";
@@ -88,7 +88,6 @@ public class ForegroundService extends Service {
             sendBroadcast(new Intent("android.intent.CLOSE_ACTIVITY"));
             Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
             sendBroadcast(closeDialog);
-
         }
     }
 

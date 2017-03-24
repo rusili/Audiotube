@@ -4,7 +4,6 @@ import android.util.Log;
 
 import nyc.c4q.rusili.audiotube.retrofit.JSON.JSONResponse;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
-import nyc.c4q.rusili.audiotube.utility.Constants;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -12,9 +11,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitData {
-    private String TAG = getClass().getName();
-    private final String key = Constants.DEVELOPER_KEY;
+    //https://www.googleapis.com/youtube/v3/videos?id=9JJmHYZQci4&key=AIzaSyDckagymH1dcK_WWeCyD908ix1OHPZbDpY&part=snippet,contentDetails
 
+    private String TAG = "RetrofitData: ";
+    private final String key = "AIzaSyDckagymH1dcK_WWeCyD908ix1OHPZbDpY";
     private String part = "snippet,contentDetails";
 
     public RetrofitData () {
@@ -22,7 +22,7 @@ public class RetrofitData {
 
     public void getInfo (final String videoIDParam, final ForegroundService foregroundService) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_YOUTUBE_URL)
+                .baseUrl("https://www.googleapis.com/youtube/v3/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
