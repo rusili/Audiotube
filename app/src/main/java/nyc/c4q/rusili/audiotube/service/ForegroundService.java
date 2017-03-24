@@ -11,10 +11,10 @@ import com.google.android.youtube.player.YouTubePlayer;
 
 import nyc.c4q.rusili.audiotube.activities.ActivityMain;
 import nyc.c4q.rusili.audiotube.notifications.PlayerControlsNotification;
-import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.retrofit.JSON.JSONResponse;
 import nyc.c4q.rusili.audiotube.retrofit.RetrofitData;
-import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
+import nyc.c4q.rusili.audiotube.utility.Constants;
+import nyc.c4q.rusili.audiotube.utility.MyYoutubePlayer;
 
 public class ForegroundService extends Service {
     private String LOG_TAG = "ForegroundService: ";

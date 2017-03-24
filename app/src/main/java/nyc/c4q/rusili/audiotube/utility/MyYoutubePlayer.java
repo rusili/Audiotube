@@ -8,7 +8,6 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import nyc.c4q.rusili.audiotube.R;
-import nyc.c4q.rusili.audiotube.google.YouTubeFailureRecoveryActivity;
 
 public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements YouTubePlayer.OnInitializedListener {
     private YouTubePlayerView youTubePlayerView;

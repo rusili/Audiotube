@@ -3,7 +3,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">Audiotube</string>
-    <string name="developer_key">AIzaSyBwazvav1xFZafKDr2thUBWAv7iFLgeIgc</string>
+    <string name="developer_key">AIzaSyDckagymH1dcK_WWeCyD908ix1OHPZbDpY</string>
 
     <string name="play">Play</string>
     <string name="pause">Pause</string>

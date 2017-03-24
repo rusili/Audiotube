@@ -13,9 +13,9 @@ import android.widget.EditText;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 
 import nyc.c4q.rusili.audiotube.R;
-import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
-import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
+import nyc.c4q.rusili.audiotube.utility.Constants;
+import nyc.c4q.rusili.audiotube.utility.MyYoutubePlayer;
 
 public class ActivityMain extends YouTubeBaseActivity implements View.OnClickListener {
     private String TAG = "ActivityMain: ";

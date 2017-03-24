@@ -10,8 +10,8 @@ import android.widget.RemoteViews;
 
 import nyc.c4q.rusili.audiotube.R;
 import nyc.c4q.rusili.audiotube.activities.ActivityMain;
-import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
+import nyc.c4q.rusili.audiotube.utility.Constants;
 
 public class PlayerControlsNotification {
     private RemoteViews notificationView;
@@ -39,7 +39,7 @@ public class PlayerControlsNotification {
         notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setAutoCancel(true)
                 .setSmallIcon(android.R.drawable.sym_def_app_icon)
-                .setContentTitle("Audiotube");
+                .setContentTitle(Constants.APP_NAME);
         notification = notificationBuilder.build();
         notification.bigContentView = notificationView;
 
