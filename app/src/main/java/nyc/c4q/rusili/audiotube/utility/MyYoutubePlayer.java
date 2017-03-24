@@ -1,4 +1,4 @@
-package nyc.c4q.rusili.audiotube.youtube;
+package nyc.c4q.rusili.audiotube.utility;
 
 import android.util.Log;
 import android.view.View;
@@ -20,7 +20,7 @@ public class MyYoutubePlayer extends YouTubeFailureRecoveryActivity implements Y
 
     private void initializeViews (View viewParam) {
         youTubePlayerView = (YouTubePlayerView) viewParam.findViewById(R.id.youtube_view);
-        youTubePlayerView.initialize(DeveloperKey.DEVELOPER_KEY, this);
+        youTubePlayerView.initialize(Constants.DEVELOPER_KEY, this);
     }
 
     @Override

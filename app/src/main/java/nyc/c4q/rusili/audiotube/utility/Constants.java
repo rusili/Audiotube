@@ -1,6 +1,11 @@
-package nyc.c4q.rusili.audiotube.other;
+package nyc.c4q.rusili.audiotube.utility;
 
 public class Constants {
+    public static final String APP_NAME = "Audiotube";
+
+    public static final String DEVELOPER_KEY = "AIzaSyDckagymH1dcK_WWeCyD908ix1OHPZbDpY";
+    public static final String BASE_YOUTUBE_URL = "https://www.googleapis.com/youtube/v3/";
+
     public interface ACTION {
         public static String REPEAT_ACTION = "repeat";
         public static String MAIN_ACTION = "main";

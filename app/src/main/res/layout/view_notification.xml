@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			 android:orientation="vertical"
-			 android:layout_width="360dp"
-			 android:layout_height="128dp"
+			 android:layout_width="@dimen/notification_width"
+			 android:layout_height="@dimen/notification_height"
 			 android:background="#f9f9f9"
 	>
 
@@ -88,7 +88,7 @@
 			android:background="#80f9f9f9"
 			>
 			<LinearLayout
-				android:layout_width="128dp"
+				android:layout_width="164dp"
 				android:layout_height="match_parent"
 				android:orientation="vertical"
 				android:gravity="center_vertical"
@@ -96,14 +96,14 @@
 
 				<TextView
 					android:id="@+id/notification_title"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="#303030"
-					/>
+					android:layout_width="fill_parent"
+					android:layout_height="18dp"
+					android:textColor="#303030">
+				</TextView>
 				<TextView
 					android:id="@+id/notification_channel"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
+					android:layout_height="18dp"
 					android:textColor="#777777"
 					/>
 
@@ -111,7 +111,7 @@
 
 			<LinearLayout
 				android:layout_width="match_parent"
-				android:layout_height="48dp"
+				android:layout_height="@dimen/button_layout_height"
 				android:orientation="horizontal"
 				android:layout_gravity="bottom"
 				>
@@ -121,35 +121,35 @@
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="20"
-					android:src="@android:drawable/ic_menu_compass"
+					android:src="@drawable/ic_loop_black_24dp"
 					/>
 				<ImageButton
 					android:id="@+id/notification_button_prev"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="20"
-					android:src="@android:drawable/ic_media_previous"
+					android:src="@drawable/ic_fast_rewind_black_24dp"
 					/>
 				<ImageButton
 					android:id="@+id/notification_button_pause"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="20"
-					android:src="@android:drawable/ic_media_pause"
+					android:src="@drawable/ic_pause_black_24dp"
 					/>
 				<ImageButton
 					android:id="@+id/notification_button_play"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="20"
-					android:src="@android:drawable/ic_media_play"
+					android:src="@drawable/ic_play_arrow_black_24dp"
 					/>
 				<ImageButton
 					android:id="@+id/notification_button_exit"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="20"
-					android:src="@android:drawable/ic_menu_edit"
+					android:src="@drawable/ic_exit_to_app_black_24dp"
 					/>
 
 			</LinearLayout>
