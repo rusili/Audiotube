@@ -4,3 +4,5 @@ Repeat on/off
 Sign In/Accounts:
     Create firebase
     Save stream history
+
+Doesn't exit activity?

@@ -1,5 +1,6 @@
 package nyc.c4q.rusili.audiotube.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -49,8 +50,8 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         myYoutubePlayer = new MyYoutubePlayer(getWindow().getDecorView().getRootView());
         setOnClickListeners();
 
-        IntentFilter filter = new IntentFilter("android.intent.CLOSE_ACTIVITY");
-        registerReceiver(mReceiver, filter);
+        IntentFilter intent = new IntentFilter("android.intent.CLOSE_ACTIVITY");
+        registerReceiver(mReceiver, intent);
     }
 
     @Override
@@ -87,34 +88,41 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
 
         notificationButtonPlay.setOnClickListener(this);
         notificationButtonPause.setOnClickListener(this);
+        notificationButtonPrev.setOnClickListener(this);
     }
 
     @Override
     public void onClick (View v) {
+        Intent intent = new Intent(ActivityMain.this, ForegroundService.class);
         switch (v.getId()) {
             case R.id.startService:
                 String url = editTextUrl.getText().toString();
                 url = url.replace("https://youtu.be/", "");
                 Log.d(TAG, url);
-                Intent startIntent = new Intent(ActivityMain.this, ForegroundService.class);
-                startIntent.putExtra("url", url);
-                startIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
-                startService(startIntent);
+                intent.putExtra("url", url);
+                intent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
+                startService(intent);
                 break;
             case R.id.stopService:
-                Intent stopIntent = new Intent(ActivityMain.this, ForegroundService.class);
-                stopIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
-                startService(stopIntent);
-                break;
+                intent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
+                startService(intent);
+                finish();
+                return;
             case R.id.notification_button_play:
-                Intent playIntent = new Intent(ActivityMain.this, ForegroundService.class);
-                playIntent.setAction(Constants.ACTION.PLAY_ACTION);
-                startService(playIntent);
+                intent.setAction(Constants.ACTION.PLAY_ACTION);
+                startService(intent);
                 break;
             case R.id.notification_button_pause:
-                Intent pauseIntent = new Intent(ActivityMain.this, ForegroundService.class);
-                pauseIntent.setAction(Constants.ACTION.PAUSE_ACTION);
-                startService(pauseIntent);
+                intent.setAction(Constants.ACTION.PAUSE_ACTION);
+                startService(intent);
+                break;
+            case R.id.notification_button_prev:
+                intent.setAction(Constants.ACTION.PREV_ACTION);
+                startService(intent);
+                break;
+            case R.id.notification_button_exit:
+                intent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
+                startService(intent);
                 break;
         }
     }
@@ -127,7 +135,7 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive (Context context, Intent intent) {
-            finish();
+            ((Activity) context).finish();
         }
     };
 }

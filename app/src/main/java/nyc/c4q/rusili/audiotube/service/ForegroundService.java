@@ -67,7 +67,7 @@ public class ForegroundService extends Service {
             //Previous
         } else if (mIntent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
             Log.i(LOG_TAG, "Clicked Previous");
-            youTubePlayer.previous();
+            youTubePlayer.seekToMillis(0);
             //Pause
         } else if (mIntent.getAction().equals(Constants.ACTION.PAUSE_ACTION)) {
             Log.i(LOG_TAG, "Clicked Pause");
@@ -83,11 +83,11 @@ public class ForegroundService extends Service {
         } else if (mIntent.getAction().equals(
                 Constants.ACTION.STOPFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Stop Foreground Intent");
+            sendBroadcast(new Intent("android.intent.CLOSE_ACTIVITY"));
             stopForeground(true);
             stopSelf();
-            sendBroadcast(new Intent("android.intent.CLOSE_ACTIVITY"));
-            Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-            sendBroadcast(closeDialog);
+            //Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            //sendBroadcast(closeDialog);
         }
     }
 
