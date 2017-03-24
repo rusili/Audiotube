@@ -10,7 +10,7 @@ import android.widget.RemoteViews;
 
 import nyc.c4q.rusili.audiotube.R;
 import nyc.c4q.rusili.audiotube.activities.ActivityMain;
-import nyc.c4q.rusili.audiotube.utility.Constants;
+import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
 
 public class PlayerControlsNotification {

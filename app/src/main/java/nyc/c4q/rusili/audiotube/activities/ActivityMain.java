@@ -13,12 +13,12 @@ import android.widget.EditText;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 
 import nyc.c4q.rusili.audiotube.R;
-import nyc.c4q.rusili.audiotube.utility.Constants;
+import nyc.c4q.rusili.audiotube.other.Constants;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
-import nyc.c4q.rusili.audiotube.utility.MyYoutubePlayer;
+import nyc.c4q.rusili.audiotube.youtube.MyYoutubePlayer;
 
 public class ActivityMain extends YouTubeBaseActivity implements View.OnClickListener {
-    private String TAG = getClass().getName();
+    private String TAG = "ActivityMain: ";
     private EditText editTextUrl;
     public static MyYoutubePlayer myYoutubePlayer;
 
@@ -32,13 +32,6 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
         IntentFilter filter = new IntentFilter("android.intent.CLOSE_ACTIVITY");
         registerReceiver(mReceiver, filter);
     }
-
-    BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive (Context context, Intent intent) {
-            finish();
-        }
-    };
 
     @Override
     protected void onResume () {
@@ -103,5 +96,10 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
 //        retrofitData.getInfo(sharedUrlParam);
 //    }
 
-
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive (Context context, Intent intent) {
+            finish();
+        }
+    };
 }
