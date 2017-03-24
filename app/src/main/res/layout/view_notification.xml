@@ -116,42 +116,7 @@
 				android:layout_gravity="bottom"
 				>
 
-				<ImageButton
-					android:id="@+id/notification_button_repeat"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="20"
-					android:src="@android:drawable/ic_menu_compass"
-					/>
-				<ImageButton
-					android:id="@+id/notification_button_prev"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="20"
-					android:src="@android:drawable/ic_media_previous"
-					/>
-				<ImageButton
-					android:id="@+id/notification_button_pause"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="20"
-					android:src="@android:drawable/ic_media_pause"
-					/>
-				<ImageButton
-					android:id="@+id/notification_button_play"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="20"
-					android:src="@android:drawable/ic_media_play"
-					/>
-				<ImageButton
-					android:id="@+id/notification_button_exit"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:layout_weight="20"
-					android:src="@android:drawable/ic_menu_edit"
-					/>
-
+				<include layout="@layout/layout_mediaplayer_controls"/>
 			</LinearLayout>
 
 		</LinearLayout>

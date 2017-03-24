@@ -9,25 +9,45 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import nyc.c4q.rusili.audiotube.R;
 import nyc.c4q.rusili.audiotube.service.ForegroundService;
 import nyc.c4q.rusili.audiotube.utility.Constants;
 import nyc.c4q.rusili.audiotube.utility.MyYoutubePlayer;
 
 public class ActivityMain extends YouTubeBaseActivity implements View.OnClickListener {
+    @BindView (R.id.edittext_url)
+    EditText editTextUrl;
+    @BindView (R.id.startService)
+    Button startService;
+    @BindView (R.id.stopService)
+    Button stopService;
+    @BindView (R.id.notification_button_repeat)
+    ImageButton notificationButtonRepeat;
+    @BindView (R.id.notification_button_prev)
+    ImageButton notificationButtonPrev;
+    @BindView (R.id.notification_button_pause)
+    ImageButton notificationButtonPause;
+    @BindView (R.id.notification_button_play)
+    ImageButton notificationButtonPlay;
+    @BindView (R.id.notification_button_exit)
+    ImageButton notificationButtonExit;
+
     private String TAG = "ActivityMain: ";
-    private EditText editTextUrl;
     public static MyYoutubePlayer myYoutubePlayer;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         myYoutubePlayer = new MyYoutubePlayer(getWindow().getDecorView().getRootView());
-        setViews();
+        setOnClickListeners();
 
         IntentFilter filter = new IntentFilter("android.intent.CLOSE_ACTIVITY");
         registerReceiver(mReceiver, filter);
@@ -57,18 +77,16 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
 
     @Override
     protected void onDestroy () {
-        super.onDestroy();
         unregisterReceiver(mReceiver);
+        super.onDestroy();
     }
 
-    private void setViews () {
-        editTextUrl = (EditText) findViewById(R.id.edittest_url);
+    private void setOnClickListeners () {
+        startService.setOnClickListener(this);
+        stopService.setOnClickListener(this);
 
-        Button startButton = (Button) findViewById(R.id.startService);
-        Button stopButton = (Button) findViewById(R.id.stopService);
-
-        startButton.setOnClickListener(this);
-        stopButton.setOnClickListener(this);
+        notificationButtonPlay.setOnClickListener(this);
+        notificationButtonPause.setOnClickListener(this);
     }
 
     @Override
@@ -87,6 +105,16 @@ public class ActivityMain extends YouTubeBaseActivity implements View.OnClickLis
                 Intent stopIntent = new Intent(ActivityMain.this, ForegroundService.class);
                 stopIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
                 startService(stopIntent);
+                break;
+            case R.id.notification_button_play:
+                Intent playIntent = new Intent(ActivityMain.this, ForegroundService.class);
+                playIntent.setAction(Constants.ACTION.PLAY_ACTION);
+                startService(playIntent);
+                break;
+            case R.id.notification_button_pause:
+                Intent pauseIntent = new Intent(ActivityMain.this, ForegroundService.class);
+                pauseIntent.setAction(Constants.ACTION.PAUSE_ACTION);
+                startService(pauseIntent);
                 break;
         }
     }

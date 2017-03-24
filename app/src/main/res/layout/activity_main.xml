@@ -16,7 +16,7 @@
     </com.google.android.youtube.player.YouTubePlayerView>
 
     <EditText
-        android:id="@+id/edittest_url"
+        android:id="@+id/edittext_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
@@ -26,14 +26,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Start Foreground Service" />
+        android:text="Start Service" />
 
     <Button
         android:id="@+id/stopService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Stop Foreground Service" />
+        android:text="Stop Service" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_mediaplayer_controls"/>
+    </LinearLayout>
 
 
 

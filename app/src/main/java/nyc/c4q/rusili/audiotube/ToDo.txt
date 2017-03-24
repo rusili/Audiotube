@@ -1,4 +1,4 @@
-Implement KillService
+Play on Share
 Repeat on/off
 
 Sign In/Accounts:
